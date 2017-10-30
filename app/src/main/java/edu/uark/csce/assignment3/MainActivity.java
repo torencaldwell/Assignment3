@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     //Create a camera intent and start it
-    private void dispachTakePictureIntent(){
+    private void dispatchTakePictureIntent(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if(takePictureIntent.resolveActivity(getPackageManager())!=null){
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -67,14 +67,14 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    //Open the call dispachTakePictureIntent and
+    //Open the call dispatchTakePictureIntent and
     public void openCamera(){
         TextView textview = (TextView)findViewById(R.id.cam_textview);
 
         if (checkCameraHardware(getApplicationContext())) {
             textview.setText("I have a camera");
             Log.i(TAG, "Opening Camera");
-            dispachTakePictureIntent();
+            dispatchTakePictureIntent();
         } else {
             textview.setText("I don't have a camera");
         }
