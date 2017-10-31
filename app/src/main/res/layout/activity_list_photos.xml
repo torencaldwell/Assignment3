@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.uark.csce.assignment3.ListPhotosActivity">
+
+        <GridView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/photo_grid_view"
+            android:numColumns="4"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="3dp"
+            android:horizontalSpacing="3dp"
+            >
+
+        </GridView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/show_map_FAB"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_map_white_24dp"
+        app:layout_anchor="@id/photo_grid_view"
+        app:layout_anchorGravity="bottom|right"
+        />
+</android.support.design.widget.CoordinatorLayout>
