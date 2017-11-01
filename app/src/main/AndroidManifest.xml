@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature android:name="android.hardware.location.gps" />
@@ -37,10 +38,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_maps" />
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="edu.uark.csce.fileprovider"
@@ -51,7 +48,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".ListPhotosActivity"></activity>
+        <activity android:name=".ListPhotosActivity" />
+        <activity android:name=".DisplayImageActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 
 </manifest>

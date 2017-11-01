@@ -18,17 +18,18 @@ import java.util.ArrayList;
 public class ImageGridAdapter extends BaseAdapter {
     private Context mContext;
     private Bitmap bitmapreceive;
+    private String filepathreceive;
 
     String TAG = "ImageGridAdapter";
 
     ArrayList<Bitmap> mThumbIds;
+    ArrayList<String> mFilePaths;
     int THUMBSIZE=0;
 
     public ImageGridAdapter(Context c, int _thumbsize){
         THUMBSIZE = _thumbsize;
-        Log.i(TAG, ""+THUMBSIZE);
         mThumbIds = new ArrayList<>();
-        THUMBSIZE = 350;
+        mFilePaths = new ArrayList<>();
         mContext = c;
     }
 
@@ -52,6 +53,7 @@ public class ImageGridAdapter extends BaseAdapter {
         ImageView imageView;
         if(convertView == null){
             imageView = new ImageView(mContext);
+            imageView.setLayoutParams(new GridView.LayoutParams(THUMBSIZE, THUMBSIZE));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }else{
             imageView = (ImageView)convertView;
@@ -62,9 +64,17 @@ public class ImageGridAdapter extends BaseAdapter {
         return imageView;
     }
 
-
-    public Bitmap add(Bitmap bitmap_receive){
+    public Bitmap addBitmap(Bitmap bitmap_receive){
         mThumbIds.add(bitmap_receive);
         return bitmapreceive;
+    }
+
+    public String addFilePath(String filepath_receive){
+        mFilePaths.add(filepath_receive);
+        return filepathreceive;
+    }
+
+    public String getFilePath(int i){
+        return mFilePaths.get(i);
     }
 }

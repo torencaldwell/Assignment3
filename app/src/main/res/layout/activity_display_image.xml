@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.uark.csce.assignment3.MainActivity">
+    tools:context="edu.uark.csce.assignment3.DisplayImageActivity"
+    android:background="#000000">
 
     <ImageView
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:id="@+id/display_image"/>
-
+        android:layout_height="match_parent"
+        android:id="@+id/display_image"
+        android:layout_gravity="center"/>
 
 </android.support.constraint.ConstraintLayout>

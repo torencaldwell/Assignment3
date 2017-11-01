@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -24,11 +27,15 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -76,13 +83,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
-
+    boolean MAP_READY = false;
+    @Override
+    public void onMapReady(GoogleMap googleMap){
+        mMap = googleMap;
+        ArrayList<Marker> markers= updateMap();
+        MAP_READY = true;
+    }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    protected void onResume(){
+        super.onResume();
+        if(MAP_READY){
+            updateMap();
+        }
+    }
 
+    public ArrayList<Marker> updateMap(){
+        ArrayList<Marker> markers= new ArrayList<>();
+        File path = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File[] fileList = path.listFiles();
+        for(int i=0; i<fileList.length; i++){
+            try {
+                ExifInterface exif = new ExifInterface(fileList[i].getPath());
 
+                float[] lat_lng = new float[2];
+
+                if(exif.getLatLong(lat_lng)) {
+                    LatLng location = new LatLng(lat_lng[0], lat_lng[1]);
+                    MarkerOptions options = new MarkerOptions().position(location);
+                    mMap.addMarker(options);
+                    Log.i("SET MARKER", location.toString());
+                    Log.i("AT", options.getPosition().toString());
+                }else{
+                    Log.i("COULD NOT RETRIEVE INFO", fileList[i].getName());
+                }
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+        return markers;
     }
 
     @Override
@@ -124,13 +164,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     //Check if the device has a camera
-    private boolean checkCameraHardware(Context context){
-        if(context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
+    private boolean checkCameraHardware(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
             return true;
         return false;
     }
-
-    String mCurrentThumbPath;
 
     //Retrieves an image thumbnail
     @Override
@@ -139,22 +177,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String fileName = "THUMBNAIL_"+timeStamp+"_";
-
-            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES + "/thumbnails/");
-            try {
-                File image = File.createTempFile(fileName, ".jpg", storageDir);
-                mCurrentThumbPath = image.getAbsolutePath();
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-
-
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("photoPath", mCurrentPhotoPath);
-            startActivity(intent);
         }
     }
 
